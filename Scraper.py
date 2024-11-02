@@ -12,7 +12,7 @@ if (response.status_code == 200):
 else:
     print("Failed to retreive page, maybe it's down?")
 
-soup = BeautifulSoup(content, "html_parser")
+soup = BeautifulSoup(content, "html.parser")
 data = []
 
 for hl in soup.find_all("span", class_="container__headline-text"):
