@@ -18,8 +18,10 @@ def data_scraping():
     #for i in range(len(hl)):
     #    print(hl[i].text)
     print("Scraping headlines...")
-    sd = pd.DataFrame(hl, columns=["Headline"])
+    sd = pd.DataFrame(hl, columns=["Headlines"])
     sd.to_csv("CNN_Headlines.csv", index=False)
+
+data_scraping()
 
 schedule.every().day.at("08:00").do(data_scraping)
 
