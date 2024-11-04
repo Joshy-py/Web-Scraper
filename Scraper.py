@@ -14,9 +14,8 @@ def data_scraping():
 
     soup = BeautifulSoup(content, "html.parser")
     hl = soup.find_all("span", class_="container__headline-text")
-    # for i in range(len(hl)):
-    #    print(hl[i].text)
     print("Scraping headlines...")
+    
     sd = pd.DataFrame(hl, columns=["Headlines"])
     sd.index = sd.index.map(lambda x:"|index " + str(x))
     sd.iloc[:,0] = sd.iloc[:,0].apply(lambda x:"| " + str(x))
