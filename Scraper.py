@@ -11,15 +11,55 @@ def data_scraping():
         content = response.text
     else:
         print("Failed to retreive page, maybe it's down?")
+    
+    hls = []
+    links = []
 
     soup = BeautifulSoup(content, "html.parser")
-    hl = soup.find_all("span", class_="container__headline-text")
+    # hl = soup.find_all("span", class_="container__headline-text")
+    for i in soup.find_all("span", class_="container__headline-text"):
+        hl = i.get_text(strip=True)
+        if hl in hls:
+            pass
+        else:
+            hls.append(hl)
+    
+    for j in soup.find_all("a", class_="container__link container__link--type-article container_list-headlines__link"):
+        link = j['href']
+        if link.startswith('/'):
+            link = "https://www.cnn.com" + link
+        if link in links:
+            pass
+        else:
+            links.append(link)
+    
+    for x in soup.find_all("a", class_="container__link container__link--type-article container_lead-plus-headlines-with-images__link"):
+        link = x['href']
+        if link.startswith('/'):
+            link = "https://www.cnn.com" + link
+        if link in links:
+            pass
+        else:
+            links.append(link)
+    
+    for y in soup.find_all("a", class_="container__link container__link--type-article container_lead-plus-headlines__link"):
+        link = y['href']
+        if link.startswith('/'):
+            link = "https://www.cnn.com" + link
+        if link in links:
+            pass
+        else:
+            links.append(link)
+
     print("Scraping headlines...")
     
-    sd = pd.DataFrame(hl, columns=["Headlines"])
-    sd.index = sd.index.map(lambda x:"|index " + str(x))
-    sd.iloc[:,0] = sd.iloc[:,0].apply(lambda x:"| " + str(x))
-    sd.to_csv("CNN_Headlines.csv", sep=" ", header=None, index=False)
+    # sd = pd.DataFrame(hl, columns=["Headlines"])
+    sd = {"Headlines" : hls, "Links": links}
+    fsd = pd.DataFrame.from_dict(sd, orient="index")
+    fsd = fsd.transpose()
+    fsd.index = fsd.index.map(lambda x:"|index " + str(x))
+    fsd.iloc[:,0] = fsd.iloc[:,0].apply(lambda x:"| " + str(x))
+    fsd.to_csv("CNN_Headlines.csv", sep=" ", header=None, index=False)
 
 data_scraping()
 
