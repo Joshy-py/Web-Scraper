@@ -16,7 +16,6 @@ def data_scraping():
     links = []
 
     soup = BeautifulSoup(content, "html.parser")
-    # hl = soup.find_all("span", class_="container__headline-text")
     for i in soup.find_all("span", class_="container__headline-text"):
         hl = i.get_text(strip=True)
         if hl in hls:
@@ -28,10 +27,7 @@ def data_scraping():
         link = j['href']
         if link.startswith('/'):
             link = "https://www.cnn.com" + link
-        if link in links:
-            pass
-        else:
-            links.append(link)
+        links.append(link)
     
     for x in soup.find_all("a", class_="container__link container__link--type-article container_lead-plus-headlines-with-images__link"):
         link = x['href']
@@ -53,7 +49,6 @@ def data_scraping():
 
     print("Scraping headlines...")
     
-    # sd = pd.DataFrame(hl, columns=["Headlines"])
     sd = {"Headlines" : hls, "Links": links}
     fsd = pd.DataFrame.from_dict(sd, orient="index")
     fsd = fsd.transpose()
