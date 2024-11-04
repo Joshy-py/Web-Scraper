@@ -38,8 +38,17 @@ def data_scraping():
         else:
             links.append(link)
     
-    for y in soup.find_all("a", class_="container__link container__link--type-article container_lead-plus-headlines__link"):
+    for y in soup.find_all("a", class_="container__link container__link--type-article container_vertical-strip__link"):
         link = y['href']
+        if link.startswith('/'):
+            link = "https://www.cnn.com" + link
+        if link in links:
+            pass
+        else:
+            links.append(link)
+    
+    for z in soup.find_all("a", class_="container__link container__link--type-article container_lead-plus-headlines__link"):
+        link = z['href']
         if link.startswith('/'):
             link = "https://www.cnn.com" + link
         if link in links:
